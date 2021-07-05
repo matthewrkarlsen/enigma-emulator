@@ -39,11 +39,4 @@ public class CharRange implements Iterable<Character> {
     public List<Character> toList() {
         return Arrays.asList(range);
     }
-
-    public static void main(String[] args) {
-        List<Character> cr = new CharRange('A', 'Z').toList();
-        System.out.println(cr.indexOf('K'));
-        System.out.println(cr.indexOf('D'));
-        System.out.println(cr.indexOf('O'));
-    }
 }
