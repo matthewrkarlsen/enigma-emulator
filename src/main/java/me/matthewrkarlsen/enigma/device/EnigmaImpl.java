@@ -26,7 +26,7 @@ public class EnigmaImpl implements Enigma {
     }
 
     @Override
-    public String encipher(String input) {
+    public String convert(String input) {
         List<Character> alphabet = new CharRange('A', 'Z').toList();
         StringBuilder stringBuilder = new StringBuilder();
         char[] chars = input.toCharArray();
@@ -66,10 +66,5 @@ public class EnigmaImpl implements Enigma {
             printer.println("", PrinterLevel.VERBOSE);
         }
         return stringBuilder.toString();
-    }
-
-    @Override
-    public String decipher(String input) {
-        return encipher(input);
     }
 }

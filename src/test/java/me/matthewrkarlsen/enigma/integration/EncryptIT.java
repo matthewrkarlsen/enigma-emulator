@@ -23,7 +23,7 @@ class EncryptIT {
         String input = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
 
         Enigma enigma = new EnigmaFactory().constructEnigma(enigmaConfig);
-        String output = enigma.encipher(input);
+        String output = enigma.convert(input);
 
         assertEquals(valid, output);
     }
@@ -41,7 +41,7 @@ class EncryptIT {
         String input = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
 
         Enigma enigma = new EnigmaFactory().constructEnigma(enigmaConfig);
-        String output = enigma.encipher(input);
+        String output = enigma.convert(input);
 
         assertEquals(valid, output);
     }

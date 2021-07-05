@@ -30,7 +30,7 @@ public class Main {
         printer.print("", PrinterLevel.VERBOSE);
 
         Enigma enigma = new EnigmaFactory().constructEnigma(enigmaConfig);
-        String output = enigma.encipher(stringIn);
+        String output = enigma.convert(stringIn);
         printer.println(output, PrinterLevel.NORMAL);
         printer.print("", PrinterLevel.VERBOSE);
     }
