@@ -2,6 +2,7 @@ package me.matthewrkarlsen.enigma;
 
 import me.matthewrkarlsen.enigma.device.Enigma;
 import me.matthewrkarlsen.enigma.device.spindle.rotor.basic.RotorName;
+import me.matthewrkarlsen.enigma.utilities.CharRange;
 import me.matthewrkarlsen.enigma.utilities.printer.Printer;
 import me.matthewrkarlsen.enigma.utilities.printer.PrinterLevel;
 import me.matthewrkarlsen.enigma.setup.EnigmaConfig;
@@ -40,19 +41,16 @@ public class Main {
     }
 
     private static String removeUnhandledChars(String stringIn) {
-        stringIn = stringIn.toUpperCase();
+        String uppercaseStringIn = stringIn.toUpperCase();
         StringBuilder stringBuilder = new StringBuilder();
-        char[] alphabetUppercase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".toCharArray();
-        for(char c : stringIn.toCharArray()) {
-            for(char c2 : alphabetUppercase) {
-                if(c == c2) {
-                    stringBuilder.append(c);
-                    break;
-                }
+        List<Character> uppercaseAlphabet = new CharRange('A', 'Z').toList();
+        char[] uppercaseMessageCharacters = uppercaseStringIn.toCharArray();
+        for(char c : uppercaseMessageCharacters) {
+            if(uppercaseAlphabet.contains(c)) {
+                stringBuilder.append(c);
             }
         }
-        stringIn = stringBuilder.toString();
-        return stringIn;
+        return stringBuilder.toString();
     }
 
     private static EnigmaConfig assembleConfig(String[] args) throws IOException {
