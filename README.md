@@ -9,12 +9,15 @@ The usage of the emulator is as follows:
 ### Console usage (on Linux)
 
 `echo "HELLOWORLD" | java -jar enigma-emu-0.0.1.jar` outputs `MFNCZBBFZM`
+
 `echo "MFNCZBBFZM" | java -jar enigma-emu-0.0.1.jar` outputs `HELLOWORLD`
 
 ### I/O from file (on Linux)
 
 `echo "HELLOWORLD" > here.txt`
+
 `cat ./here.txt | java -jar enigma-emu-0.0.1.jar > ./there.txt`
+
 `cat ./there.txt | java -jar enigma-emu-0.0.1.jar > ./back_again.txt`
 
 ## Acknowledgements
