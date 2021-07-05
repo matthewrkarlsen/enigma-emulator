@@ -20,11 +20,7 @@ public class Main {
         Printer printer = new Printer(isVerbose(args));
         printer.println(enigmaConfig.getString("enigma.splash.text"), PrinterLevel.VERBOSE);
 
-        String stringIn = "HELLOWORLD";
-        if(System.in.available() > 0) {
-            byte[] bytes = System.in.readAllBytes();
-            stringIn = new String(bytes);
-        }
+        String stringIn = readInMessageOrUseDefault("HELLOWORLD");
         stringIn = removeUnhandledChars(stringIn);
         printer.println(stringIn, PrinterLevel.VERBOSE);
         printer.print("", PrinterLevel.VERBOSE);
@@ -32,6 +28,15 @@ public class Main {
         Enigma enigma = new EnigmaFactory().constructEnigma(enigmaConfig);
         String output = enigma.convert(stringIn);
         printer.println(output, PrinterLevel.NORMAL);
+    }
+
+    private static String readInMessageOrUseDefault(String defaultMessage) throws IOException {
+        String stringIn = defaultMessage;
+        if(System.in.available() > 0) {
+            byte[] bytes = System.in.readAllBytes();
+            stringIn = new String(bytes);
+        }
+        return stringIn;
     }
 
     private static String removeUnhandledChars(String stringIn) {
