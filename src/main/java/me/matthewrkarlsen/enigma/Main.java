@@ -33,11 +33,6 @@ public class Main {
         String output = enigma.encipher(stringIn);
         printer.println(output, PrinterLevel.NORMAL);
         printer.print("", PrinterLevel.VERBOSE);
-
-        Enigma enigma2 = new EnigmaFactory().constructEnigma(enigmaConfig);
-        String output2 = enigma2.decipher(output);
-        printer.println(output2, PrinterLevel.VERBOSE);
-        printer.print("", PrinterLevel.VERBOSE);
     }
 
     private static String removeUnhandledChars(String stringIn) {
