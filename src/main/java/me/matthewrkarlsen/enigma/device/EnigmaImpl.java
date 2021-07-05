@@ -39,25 +39,26 @@ public class EnigmaImpl implements Enigma {
             spindle.get(1).doubleStep();
             spindle.get(2).increment();
             SpatialIndex inputInt = new SpatialIndex(entryWheel.fromRight(c));
-            printer.print(c + " -> " + inputInt + "|", PrinterLevel.VERBOSE);
+            printer.print(c + " -> " + inputInt + " | ", PrinterLevel.VERBOSE);
             for (int i = 2; i > -1; i--) {
                 PositionedWheel wheel = spindle.get(i);
                 printer.print(String.valueOf(inputInt), PrinterLevel.VERBOSE);
                 inputInt = wheel.fromRight(inputInt);
-                printer.print(" -> " + inputInt + "| ", PrinterLevel.VERBOSE);
+                printer.print(" -> " + inputInt + " | ", PrinterLevel.VERBOSE);
             }
             printer.print(String.valueOf(inputInt), PrinterLevel.VERBOSE);
             inputInt = reflector.fromRight(inputInt);
-            printer.print(" -> " + inputInt + "| ", PrinterLevel.VERBOSE);
+            printer.print(" -> " + inputInt + " | ", PrinterLevel.VERBOSE);
             for (int i = 0; i < 3; i++) {
                 PositionedWheel wheel = spindle.get(i);
                 printer.print(String.valueOf(inputInt), PrinterLevel.VERBOSE);
                 inputInt = wheel.fromLeft(inputInt);
-                printer.print(" -> " + inputInt + "| ", PrinterLevel.VERBOSE);
+                printer.print(" -> " + inputInt + " | ", PrinterLevel.VERBOSE);
             }
-            printer.println("", PrinterLevel.VERBOSE);
             int value = inputInt.value();
             char c1 = entryWheel.fromLeft(value);
+            printer.print(inputInt + " -> " + c1, PrinterLevel.VERBOSE);
+            printer.println("", PrinterLevel.VERBOSE);
             stringBuilder.append(c1);
             printer.print("Wheel positions: ", PrinterLevel.VERBOSE);
             for (PositionedWheel positionedPositionedWheel : spindle) {
