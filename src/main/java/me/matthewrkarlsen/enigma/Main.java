@@ -32,7 +32,6 @@ public class Main {
         Enigma enigma = new EnigmaFactory().constructEnigma(enigmaConfig);
         String output = enigma.convert(stringIn);
         printer.println(output, PrinterLevel.NORMAL);
-        printer.print("", PrinterLevel.VERBOSE);
     }
 
     private static String removeUnhandledChars(String stringIn) {
