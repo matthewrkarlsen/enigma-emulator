@@ -1,6 +1,7 @@
 # Enigma Emulator
 
-The emulator is very basic at present.
+The emulator is a very basic three-wheel implementation at present.
+The wheels used are wheels I, II and III of the Enigma I variant.
 
 ## Emulator Usage 
 
@@ -22,8 +23,9 @@ The usage of the emulator is as follows:
 
 ## Acknowledgements
 
-The wiring for each wheel of the Enigma was obtained from the
+The wiring for the wheels and reflectors of the Enigma was obtained from the
 [Enigma Wiring](https://www.cryptomuseum.com/crypto/enigma/wiring.htm) page of the Crypto Museum.
+Similarly, this page contains information on the 'notch' and 'turnover' details of each wheel.
 
 This [Enigma details](http://users.telenet.be/d.rijmenants/en/enigmatech.htm#steppingmechanism) page
 was critical in the replication of the original design, since it explains the stepping mechanism very
