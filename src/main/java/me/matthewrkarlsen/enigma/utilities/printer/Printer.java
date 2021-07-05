@@ -19,7 +19,7 @@ public class Printer {
         if (requiredLevel == PrinterLevel.VERBOSE && !verbose) {
             return;
         }
-        System.out.println(string);
+        System.out.print(string);
     }
 
 }
