@@ -25,18 +25,7 @@ public class Main {
             byte[] bytes = System.in.readAllBytes();
             stringIn = new String(bytes);
         }
-        stringIn = stringIn.toUpperCase();
-        StringBuilder stringBuilder = new StringBuilder();
-        char[] alphabetUppercase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".toCharArray();
-        for(char c : stringIn.toCharArray()) {
-            for(char c2 : alphabetUppercase) {
-                if(c == c2) {
-                    stringBuilder.append(c);
-                    break;
-                }
-            }
-        }
-        stringIn = stringBuilder.toString();
+        stringIn = removeUnhandledChars(stringIn);
         printer.println(stringIn, PrinterLevel.VERBOSE);
         printer.print("", PrinterLevel.VERBOSE);
 
@@ -49,6 +38,22 @@ public class Main {
         String output2 = enigma2.decipher(output);
         printer.println(output2, PrinterLevel.VERBOSE);
         printer.print("", PrinterLevel.VERBOSE);
+    }
+
+    private static String removeUnhandledChars(String stringIn) {
+        stringIn = stringIn.toUpperCase();
+        StringBuilder stringBuilder = new StringBuilder();
+        char[] alphabetUppercase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".toCharArray();
+        for(char c : stringIn.toCharArray()) {
+            for(char c2 : alphabetUppercase) {
+                if(c == c2) {
+                    stringBuilder.append(c);
+                    break;
+                }
+            }
+        }
+        stringIn = stringBuilder.toString();
+        return stringIn;
     }
 
     private static EnigmaConfig assembleConfig(String[] args) throws IOException {
