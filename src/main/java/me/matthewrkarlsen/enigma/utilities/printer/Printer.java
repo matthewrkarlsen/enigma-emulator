@@ -2,6 +2,10 @@ package me.matthewrkarlsen.enigma.utilities.printer;
 
 public class Printer {
 
+    //TODO: refactor to extract printer level check method that returns a Boolean
+    //TODO: code tests for the extracted method
+    //TODO: hold PrinterLevel, not 'boolean verbose'
+
     private final boolean verbose;
 
     public Printer(boolean verbose) {
@@ -22,4 +26,10 @@ public class Printer {
         System.out.print(string);
     }
 
+    public void print(char c, PrinterLevel requiredLevel) {
+        if (requiredLevel == PrinterLevel.VERBOSE && !verbose) {
+            return;
+        }
+        System.out.print(c);
+    }
 }

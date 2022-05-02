@@ -2,15 +2,17 @@ package me.matthewrkarlsen.enigma;
 
 import me.matthewrkarlsen.enigma.device.Enigma;
 import me.matthewrkarlsen.enigma.device.spindle.rotor.basic.RotorName;
-import me.matthewrkarlsen.enigma.utilities.CharRange;
-import me.matthewrkarlsen.enigma.utilities.printer.Printer;
-import me.matthewrkarlsen.enigma.utilities.printer.PrinterLevel;
+import me.matthewrkarlsen.enigma.device.string.StringFactory;
 import me.matthewrkarlsen.enigma.setup.EnigmaConfig;
 import me.matthewrkarlsen.enigma.setup.EnigmaFactory;
+import me.matthewrkarlsen.enigma.utilities.printer.Printer;
+import me.matthewrkarlsen.enigma.utilities.printer.PrinterLevel;
 
 import java.io.IOException;
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Properties;
 
 public class Main {
 
@@ -43,10 +45,10 @@ public class Main {
     private static String removeUnhandledChars(String stringIn) {
         String uppercaseStringIn = stringIn.toUpperCase();
         StringBuilder stringBuilder = new StringBuilder();
-        List<Character> uppercaseAlphabet = new CharRange('A', 'Z').toList();
+        String uppercaseAlphabet = new StringFactory().assembleString('A', 'Z');
         char[] uppercaseMessageCharacters = uppercaseStringIn.toCharArray();
         for(char c : uppercaseMessageCharacters) {
-            if(uppercaseAlphabet.contains(c)) {
+            if(uppercaseAlphabet.lastIndexOf(c) > -1) {
                 stringBuilder.append(c);
             }
         }
@@ -61,9 +63,9 @@ public class Main {
         properties.load(Main.class.getClassLoader().getResourceAsStream("enigma.properties"));
 
         if(rotorNames.size() == 3) {
-            properties.setProperty("enigma.machine.slot.left.rotor.name", rotorNames.get(0).value());
-            properties.setProperty("enigma.machine.slot.center.rotor.name", rotorNames.get(1).value());
-            properties.setProperty("enigma.machine.slot.right.rotor.name", rotorNames.get(2).value());
+            properties.setProperty("enigma.machine.slot.left.rotor.name", rotorNames.get(0).toString());
+            properties.setProperty("enigma.machine.slot.center.rotor.name", rotorNames.get(1).toString());
+            properties.setProperty("enigma.machine.slot.right.rotor.name", rotorNames.get(2).toString());
         }
 
         if(verbose) {
@@ -75,8 +77,9 @@ public class Main {
 
     private static List<RotorName> getRotorNames(String[] args) {
         List<RotorName> rotorNames = new ArrayList<>();
-        List<String> argsFiltered = Arrays.stream(args).filter(arg -> arg.startsWith("--rotors="))
-                .collect(Collectors.toList());
+        List<String> argsFiltered = Arrays.stream(args)
+                .filter(arg -> arg.startsWith("--rotors="))
+                .toList();
         if(argsFiltered.size() > 1) {
             throw new IllegalStateException("Only one rotor argument permitted");
         }

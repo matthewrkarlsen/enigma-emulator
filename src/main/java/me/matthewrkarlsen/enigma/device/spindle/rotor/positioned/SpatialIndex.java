@@ -10,8 +10,12 @@ public class SpatialIndex {
         this.index = index;
     }
 
-    public WheelIndex withPosition(int position) {
-        int i = (index + position) % 26;
+    public static SpatialIndex of(int index) {
+        return new SpatialIndex(index);
+    }
+
+    public WheelIndex withPosition(int position, int settingsCount) {
+        int i = (index + position) % settingsCount;
         return new WheelIndex(i);
     }
 
@@ -22,5 +26,13 @@ public class SpatialIndex {
     @Override
     public String toString() {
         return String.valueOf(index);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if(!(o instanceof SpatialIndex spatialIndex)) {
+            return false;
+        }
+        return this.index == spatialIndex.index;
     }
 }

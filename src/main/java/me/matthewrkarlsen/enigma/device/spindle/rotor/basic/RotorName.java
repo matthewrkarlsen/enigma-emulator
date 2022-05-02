@@ -8,7 +8,8 @@ public class RotorName {
         this.rotorName = rotorName;
     }
 
-    public String value() {
+    @Override
+    public String toString() {
         return this.rotorName;
     }
 }

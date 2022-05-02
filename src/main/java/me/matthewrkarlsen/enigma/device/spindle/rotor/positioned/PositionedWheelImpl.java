@@ -1,87 +1,87 @@
 package me.matthewrkarlsen.enigma.device.spindle.rotor.positioned;
 
-import me.matthewrkarlsen.enigma.device.spindle.rotor.ringed.WheelWithRing;
-import me.matthewrkarlsen.enigma.utilities.CharRange;
 import me.matthewrkarlsen.enigma.device.spindle.rotor.ringed.WheelIndex;
-
-import java.util.ArrayList;
-import java.util.List;
+import me.matthewrkarlsen.enigma.device.spindle.rotor.ringed.WheelWithRing;
 
 public class PositionedWheelImpl implements PositionedWheel {
 
-    private final int slot;
-    private final WheelWithRing wheel;
+    private final int slotNumber;
+    private final WheelWithRing wheelWithRing;
     private final PositionedWheel wheelToLeft;
-    private final List<Character> baseChars;
-    public List<Character> offsetChars;
-
-    int position;
-
-    public PositionedWheelImpl(int slot, RotorPosition position, WheelWithRing wheel, PositionedWheel wheelToLeft) {
-        this.baseChars = new CharRange('A', 'Z').toList();
-        this.slot = slot;
-        this.position = position.getRotorPosition();
-        this.wheel = wheel;
-        this.wheelToLeft = wheelToLeft;
-        this.offsetChars = new ArrayList<>();
-        for(int i = 0; i < 26; i++) {
-            int index = (i + this.position) % 26;
-            Character e = baseChars.get(index);
-            offsetChars.add(e);
-        }
-    }
+    private final String alphabet;
+    private final RotorPosition rotorPosition;
 
     boolean doubleStepNextStep = false;
 
+    public PositionedWheelImpl(
+            int slotNumber,
+            String alphabet,
+            RotorPosition rotorPosition,
+            WheelWithRing wheelWithRing,
+            PositionedWheel wheelToLeft
+    ) {
+        this.alphabet = alphabet;
+        this.slotNumber = slotNumber;
+        this.rotorPosition = rotorPosition;
+        this.wheelWithRing = wheelWithRing;
+        this.wheelToLeft = wheelToLeft;
+    }
+
     @Override
     public void increment() {
-        if(baseChars.get(position) == wheel.getTriggerChar()) {
-            if(wheelToLeft != null) {
-                wheelToLeft.increment();
-            }
-        }
-        position = (position + 1) % 26;
-        if(slot == 1 && baseChars.get(position) == wheel.getTriggerChar()) {
+        incrementWheelToLeftIfRequired();
+        rotorPosition.increment();
+        char currentCharacter = alphabet.charAt(rotorPosition.getRotorPosition());
+        if(slotNumber == 1 && currentCharacter == wheelWithRing.getTriggerChar()) {
             doubleStepNextStep = true;
         }
     }
 
+    //FIXME -- increment and double step should be single method?
     @Override
     public void doubleStep() {
         if(doubleStepNextStep) {
-            if(baseChars.get(position) == wheel.getTriggerChar()) {
-                if(wheelToLeft != null) {
-                    wheelToLeft.increment();
-                }
-            }
-            position = (position + 1) % 26;
+            incrementWheelToLeftIfRequired();
+            rotorPosition.increment();
             doubleStepNextStep = false;
         }
     }
 
-    @Override
-    public SpatialIndex fromRight(SpatialIndex input) {
-        WheelIndex wheelIndex = input.withPosition(position);
-        WheelIndex i = wheel.fromRight(wheelIndex);
-        SpatialIndex si = i.withPosition(position);
-        return si;
+    private void incrementWheelToLeftIfRequired() {
+        if (alphabet.charAt(rotorPosition.getRotorPosition()) == wheelWithRing.getTriggerChar()) {
+            if (wheelToLeft != null) {
+                wheelToLeft.increment();
+            }
+        }
     }
 
     @Override
-    public SpatialIndex fromLeft(SpatialIndex input) {
-        WheelIndex wheelIndex = input.withPosition(position);
-        WheelIndex intVal = wheel.fromLeft(wheelIndex);
-        SpatialIndex si = intVal.withPosition(position);
-        return si;
+    public SpatialIndex convertOutwardInput(SpatialIndex input) {
+        int rawRotorPosition = rotorPosition.getRotorPosition();
+        int alphabetLength = alphabet.length();
+        WheelIndex inputIndex = input.withPosition(rawRotorPosition, alphabetLength);
+        WheelIndex outputIndex = wheelWithRing.fromRight(inputIndex);
+        SpatialIndex spatialIndex = outputIndex.withPosition(rawRotorPosition, alphabetLength);
+        return spatialIndex;
     }
 
     @Override
-    public int getPosition() {
-        return position;
+    public SpatialIndex convertReturnInput(SpatialIndex input) {
+        int rawRotorPosition = rotorPosition.getRotorPosition();
+        int alphabetLength = alphabet.length();
+        WheelIndex inputIndex = input.withPosition(rawRotorPosition, alphabetLength);
+        WheelIndex outputIndex = wheelWithRing.fromLeft(inputIndex);
+        SpatialIndex spatialIndex = outputIndex.withPosition(rawRotorPosition, alphabetLength);
+        return spatialIndex;
     }
 
     @Override
-    public String toString() {
-        return String.valueOf(baseChars.get(position));
+    public RotorPosition getRotorPosition() {
+        return rotorPosition;
+    }
+
+    @Override
+    public Character getCharSetting() {
+        return alphabet.charAt(rotorPosition.getRotorPosition());
     }
 }

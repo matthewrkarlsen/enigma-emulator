@@ -6,9 +6,11 @@ public interface PositionedWheel {
 
     void doubleStep();
 
-    SpatialIndex fromRight(SpatialIndex input);
+    SpatialIndex convertOutwardInput(SpatialIndex input);
 
-    SpatialIndex fromLeft(SpatialIndex input);
+    SpatialIndex convertReturnInput(SpatialIndex input);
 
-    int getPosition();
+    RotorPosition getRotorPosition();
+
+    Character getCharSetting();
 }

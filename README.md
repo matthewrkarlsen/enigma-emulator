@@ -3,23 +3,25 @@
 The emulator is a very basic three-wheel implementation at present.
 The wheels used are wheels I, II and III of the Enigma I variant.
 
+In this program, the 'first' wheel is the rightmost wheel.
+
 ## Emulator Usage 
 
 The usage of the emulator is as follows:
 
 ### Console usage (on Linux)
 
-`echo "HELLOWORLD" | java -jar enigma-emu-0.0.1.jar` outputs `MFNCZBBFZM`
+`echo "HELLOWORLD" | java -jar enigma-emulator-0.0.1.jar` outputs `MFNCZBBFZM`
 
-`echo "MFNCZBBFZM" | java -jar enigma-emu-0.0.1.jar` outputs `HELLOWORLD`
+`echo "MFNCZBBFZM" | java -jar enigma-emulator-0.0.1.jar` outputs `HELLOWORLD`
 
 ### I/O from file (on Linux)
 
 `echo "HELLOWORLD" > here.txt`
 
-`cat ./here.txt | java -jar enigma-emu-0.0.1.jar > ./there.txt`
+`cat ./here.txt | java -jar enigma-emulator-0.0.1.jar > ./there.txt`
 
-`cat ./there.txt | java -jar enigma-emu-0.0.1.jar > ./back_again.txt`
+`cat ./there.txt | java -jar enigma-emulator-0.0.1.jar > ./back_again.txt`
 
 ## Acknowledgements
 

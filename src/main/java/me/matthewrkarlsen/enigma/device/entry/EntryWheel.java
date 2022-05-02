@@ -1,22 +1,18 @@
 package me.matthewrkarlsen.enigma.device.entry;
 
-import me.matthewrkarlsen.enigma.utilities.CharRange;
-
-import java.util.List;
-
 public class EntryWheel {
 
-    private final List<Character> setupChars;
+    private final String alphabet;
 
-    public EntryWheel() {
-        setupChars = new CharRange('A', 'Z').toList();
+    public EntryWheel(String alphabet) {
+        this.alphabet = alphabet;
     }
 
-    public int fromRight(char input) {
-        return setupChars.indexOf(input);
+    public int convertCharacterToIndex(char input) {
+        return alphabet.indexOf(input);
     }
 
-    public char fromLeft(int input) {
-        return setupChars.get(input);
+    public char convertIndexToCharacter(int input) {
+        return alphabet.charAt(input);
     }
 }
