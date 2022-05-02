@@ -37,5 +37,16 @@ An existing [Enigma Simulator](https://piotte13.github.io/enigma-cipher/) page w
 to verify that enciphered text was accurate to the original design.
 
 It would have been impossible to construct the emulator without the first two links above.
-The third link above made the process much less error prone and provided a way of verifying the
+The third link above made the process much less error-prone and provided a way of verifying the
 resulting emulator. The author would like to thank the creators of the above pages.
+
+## Software Used
+
+The software is constructed using Java 17 with the following additional libraries:
+
+| Software    | Scope  | License                                                                                      |
+|-------------|--------|----------------------------------------------------------------------------------------------|
+| JUnit 5.x   | Test   | [EPL 2.0](https://github.com/junit-team/junit5/blob/main/LICENSE.md)                         |
+| Mockito 4.x | Test   | [MIT](https://github.com/mockito/mockito/blob/main/LICENSE)                                  |
+| AssertJ 3.x | Test   | [Apache 2.0](https://github.com/assertj/assertj-core/blob/main/LICENSE.txt)                  |
+| Maven       | Build  | [Apache 2.0](https://gitbox.apache.org/repos/asf?p=maven.git;a=blob_plain;f=LICENSE;hb=HEAD) |
