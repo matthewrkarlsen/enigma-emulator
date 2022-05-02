@@ -1,0 +1,7 @@
+<configuration>
+    <appender name="CONSOLE">
+    </appender>
+    <root level="info">
+        <appender-ref ref="CONSOLE" />
+    </root>
+</configuration>

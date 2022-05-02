@@ -5,8 +5,10 @@ import me.matthewrkarlsen.enigma.device.spindle.rotor.basic.RotorName;
 import me.matthewrkarlsen.enigma.device.string.StringFactory;
 import me.matthewrkarlsen.enigma.setup.EnigmaConfig;
 import me.matthewrkarlsen.enigma.setup.EnigmaFactory;
-import me.matthewrkarlsen.enigma.utilities.printer.Printer;
-import me.matthewrkarlsen.enigma.utilities.printer.PrinterLevel;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.core.config.Configurator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -16,21 +18,27 @@ import java.util.Properties;
 
 public class Main {
 
+    private static final Logger logger = LoggerFactory.getLogger(Main.class);
+
     public static void main(String[] args) throws IOException {
 
         EnigmaConfig enigmaConfig = assembleConfig(args);
 
-        Printer printer = new Printer(isVerbose(args));
-        printer.println(enigmaConfig.getString("enigma.splash.text"), PrinterLevel.VERBOSE);
+        if(isVerbose(args)) {
+            Configurator.setRootLevel(Level.DEBUG);
+        } else {
+            Configurator.setRootLevel(Level.INFO);
+        }
+
+        logger.info(enigmaConfig.getString("enigma.splash.text"));
 
         String stringIn = readInMessageOrUseDefault("HELLOWORLD");
         stringIn = removeUnhandledChars(stringIn);
-        printer.println(stringIn, PrinterLevel.VERBOSE);
-        printer.print("", PrinterLevel.VERBOSE);
+        logger.info("Input: {}", stringIn);
 
         Enigma enigma = new EnigmaFactory().constructEnigma(enigmaConfig);
         String output = enigma.convert(stringIn);
-        printer.println(output, PrinterLevel.NORMAL);
+        logger.info("Output: {}", output);
     }
 
     private static String readInMessageOrUseDefault(String defaultMessage) throws IOException {

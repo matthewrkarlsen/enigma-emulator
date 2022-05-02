@@ -5,23 +5,22 @@ import me.matthewrkarlsen.enigma.device.reflector.Reflector;
 import me.matthewrkarlsen.enigma.device.spindle.Spindle;
 import me.matthewrkarlsen.enigma.device.spindle.rotor.positioned.PositionedWheel;
 import me.matthewrkarlsen.enigma.device.spindle.rotor.positioned.SpatialIndex;
-import me.matthewrkarlsen.enigma.utilities.printer.Printer;
-import me.matthewrkarlsen.enigma.utilities.printer.PrinterLevel;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class EnigmaImpl implements Enigma {
 
-    private final Printer printer;
+    private static final Logger logger = LoggerFactory.getLogger(EnigmaImpl.class);
+
     private final Spindle spindle;
     private final Reflector reflector;
     private final EntryWheel entryWheel;
 
     public EnigmaImpl(
-            Printer printer,
             Spindle spindle,
             Reflector reflector,
             EntryWheel entryWheel
     ) {
-        this.printer = printer;
         this.spindle = spindle;
         this.reflector = reflector;
         this.entryWheel = entryWheel;
@@ -29,44 +28,47 @@ public class EnigmaImpl implements Enigma {
 
     @Override
     public String convert(String input) {
-        StringBuilder stringBuilder = new StringBuilder();
+        StringBuilder outputStringBuilder = new StringBuilder();
         char[] chars = input.toCharArray();
-        printer.print("Wheel positions: ", PrinterLevel.VERBOSE);
+        StringBuilder wheelPositionsStringBuilder = new StringBuilder();
+        wheelPositionsStringBuilder.append("Wheel positions: ");
         for(PositionedWheel positionedPositionedWheel : spindle) {
-            printer.print(positionedPositionedWheel.getCharSetting(), PrinterLevel.VERBOSE);
+            wheelPositionsStringBuilder.append(positionedPositionedWheel.getCharSetting());
         }
-        printer.println("", PrinterLevel.VERBOSE);
+        logger.debug(wheelPositionsStringBuilder.toString());
         for (char c : chars) {
+            StringBuilder oneIOStringBuilder = new StringBuilder();
             spindle.get(1).doubleStep();
             spindle.get(2).increment();
             SpatialIndex inputInt = new SpatialIndex(entryWheel.convertCharacterToIndex(c));
-            printer.print(c + " -> " + inputInt + " | ", PrinterLevel.VERBOSE);
+            oneIOStringBuilder.append(c).append(" -> ").append(inputInt).append(" | ");
             for (int i = 2; i > -1; i--) {
                 PositionedWheel wheel = spindle.get(i);
-                printer.print(String.valueOf(inputInt), PrinterLevel.VERBOSE);
+                oneIOStringBuilder.append(inputInt);
                 inputInt = wheel.convertOutwardInput(inputInt);
-                printer.print(" -> " + inputInt + " | ", PrinterLevel.VERBOSE);
+                oneIOStringBuilder.append(" -> ").append(inputInt).append(" | ");
             }
-            printer.print(String.valueOf(inputInt), PrinterLevel.VERBOSE);
+            oneIOStringBuilder.append(inputInt);
             inputInt = reflector.reflect(inputInt);
-            printer.print(" -> " + inputInt + " | ", PrinterLevel.VERBOSE);
+            oneIOStringBuilder.append(" -> ").append(inputInt).append(" | ");
             for (int i = 0; i < 3; i++) {
                 PositionedWheel wheel = spindle.get(i);
-                printer.print(String.valueOf(inputInt), PrinterLevel.VERBOSE);
+                oneIOStringBuilder.append(inputInt);
                 inputInt = wheel.convertReturnInput(inputInt);
-                printer.print(" -> " + inputInt + " | ", PrinterLevel.VERBOSE);
+                oneIOStringBuilder.append(" -> ").append(inputInt).append(" | ");
             }
             int value = inputInt.value();
             char c1 = entryWheel.convertIndexToCharacter(value);
-            printer.print(inputInt + " -> " + c1, PrinterLevel.VERBOSE);
-            printer.println("", PrinterLevel.VERBOSE);
-            stringBuilder.append(c1);
-            printer.print("Wheel positions: ", PrinterLevel.VERBOSE);
+            oneIOStringBuilder.append(inputInt).append(" -> ").append(c1);
+            logger.debug(oneIOStringBuilder.toString());
+            outputStringBuilder.append(c1);
+            StringBuilder wheelPositionsStringBuilder2 = new StringBuilder();
+            wheelPositionsStringBuilder2.append("Wheel positions: ");
             for (PositionedWheel positionedPositionedWheel : spindle) {
-                printer.print(positionedPositionedWheel.getCharSetting(), PrinterLevel.VERBOSE);
+                wheelPositionsStringBuilder2.append(positionedPositionedWheel.getCharSetting());
             }
-            printer.println("", PrinterLevel.VERBOSE);
+            logger.debug(wheelPositionsStringBuilder2.toString());
         }
-        return stringBuilder.toString();
+        return outputStringBuilder.toString();
     }
 }

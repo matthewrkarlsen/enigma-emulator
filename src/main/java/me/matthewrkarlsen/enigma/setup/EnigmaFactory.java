@@ -11,7 +11,6 @@ import me.matthewrkarlsen.enigma.device.spindle.rotor.positioned.PositionedWheel
 import me.matthewrkarlsen.enigma.device.spindle.rotor.positioned.RotorPosition;
 import me.matthewrkarlsen.enigma.device.spindle.rotor.ringed.WheelWithRingImpl;
 import me.matthewrkarlsen.enigma.device.string.StringFactory;
-import me.matthewrkarlsen.enigma.utilities.printer.Printer;
 
 import java.util.List;
 
@@ -59,7 +58,6 @@ public class EnigmaFactory {
                         w2
                 );
         Enigma enigma = new EnigmaImpl(
-                new Printer(cfg.getBoolean("enigma.printer.verbose")),
                 new Spindle(
                         List.of(
                                 w3,
